@@ -105,6 +105,7 @@ rc-service $DAEMON stop
 
 # We use `install` instead of `upgrade` to ensure package dependencies are upgraded
 pipx install --global --force $PIPX_PACKAGE
+
 rc-service $DAEMON start
 EOT
 
