@@ -102,7 +102,9 @@ if ! package_upgrades; then
 fi
 
 rc-service $DAEMON stop
-pipx upgrade --global --force $PIPX_PACKAGE
+
+# We use `install` instead of `upgrade` to ensure package dependencies are upgraded
+pipx install --global --force $PIPX_PACKAGE
 rc-service $DAEMON start
 EOT
 
