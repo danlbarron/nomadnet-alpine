@@ -89,12 +89,20 @@ install_cronjob() {
   cat <<EOT >> $CRONJOB_PATH
 #!/bin/sh
 
-if ! pipx runpip --global $PIPX_PACKAGE list --outdated | tail -n +3 | awk '{print $(echo '$1')}' | grep -Fxq $PIPX_PACKAGE; then
+package_upgrades() {
+  for package in $(echo '$')(pipx runpip --global $PIPX_PACKAGE list --outdated | tail -n +3); do
+    return 0
+  done
+
+  return 1
+}
+
+if ! package_upgrades; then
   exit 0
 fi
 
 rc-service $DAEMON stop
-pipx upgrade --global $PIPX_PACKAGE
+pipx upgrade --global --force $PIPX_PACKAGE
 rc-service $DAEMON start
 EOT
 
